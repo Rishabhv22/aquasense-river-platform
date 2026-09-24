@@ -120,25 +120,63 @@ Compiled production artifacts will be generated in `frontend/dist/`.
 
 ---
 
-## 🐳 Docker Deployment
+## ☁️ Deployment Guide (GitHub, Render & Vercel)
 
-To launch both backend and frontend using Docker Compose:
+### 1. Push to GitHub
+
+Initialize and push to your GitHub repository:
 
 ```bash
-docker-compose up --build
+# Add your GitHub remote URL (replace YOUR_USERNAME/YOUR_REPO with your details)
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+
+# Push to main branch
+git push -u origin main
 ```
 
 ---
 
-## 👨‍💻 Project Author
+### 2. Deploy Backend to Render (Free Web Service)
 
-**Rishabh Vyas**  
-Bachelor of Technology — Computer Science & Engineering  
-**Drs. Kiran & Pallavi Patel Global University**  
-Class of 2026
+AquaSense includes a pre-configured [render.yaml](file:///render.yaml):
+
+1. Log into [Render](https://render.com).
+2. Click **New +** → **Blueprint** (or **Web Service**).
+3. Connect your GitHub repository.
+4. If using Blueprint: Render will automatically detect `render.yaml` and configure everything.
+5. If creating a manual **Web Service**:
+   - **Root Directory**: `backend`
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Environment Variables**: `PYTHON_VERSION` = `3.11.9`
+6. Click **Create Web Service**.
+7. Once deployed, copy your live backend URL (e.g. `https://aquasense-backend.onrender.com`).
+
+---
+
+### 3. Deploy Frontend to Vercel
+
+AquaSense includes pre-configured [vercel.json](file:///vercel.json) files:
+
+1. Log into [Vercel](https://vercel.com).
+2. Click **Add New…** → **Project**.
+3. Import your GitHub repository.
+4. In the **Configure Project** screen:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click "Edit" and choose `frontend` *(or leave as root, root `vercel.json` will route automatically)*
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+5. Under **Environment Variables**, add:
+   - **Name**: `VITE_API_URL`
+   - **Value**: `https://aquasense-backend.onrender.com` *(your live Render backend URL from Step 2)*
+6. Click **Deploy**.
+
+Your live frontend will now communicate seamlessly with your Render-hosted ML API!
 
 ---
 
 ## ⚖️ Scientific & Regulatory Notice
 
 This application is an analytical decision-support and academic evaluation system. Predictions, calculated water quality indicators, and automated insights do not replace certified laboratory testing or official statutory regulatory monitoring by the Central Pollution Control Board (CPCB) or State Pollution Control Boards (SPCBs).
+
