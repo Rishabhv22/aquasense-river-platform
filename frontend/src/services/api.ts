@@ -14,7 +14,9 @@ import {
   HealthResponse
 } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const rawEnvUrl = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
+const normalizedUrl = rawEnvUrl ? rawEnvUrl.replace(/\/+$/, '') : '';
+const API_BASE = normalizedUrl || (import.meta.env.DEV ? 'http://localhost:8000' : 'https://aquasense-river-platform.onrender.com');
 
 export class ApiError extends Error {
   status?: number;

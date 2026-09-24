@@ -25,9 +25,8 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         </div>
         <div className="space-y-1.5 flex-1">
           <h4 className="font-serif font-semibold text-base text-deep">{title}</h4>
-          <p className="text-sm text-mid leading-relaxed">{message}</p>
           <p className="text-xs text-soft">
-            Ensure the FastAPI backend is running on <code className="font-mono bg-line px-1 py-0.5 rounded text-[11px]">http://localhost:8000</code>.
+            Connecting to backend at <code className="font-mono bg-line px-1 py-0.5 rounded text-[11px]">{import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000' : 'https://aquasense-river-platform.onrender.com')}</code>. Note: Cloud instances on free tiers may take 30–50s to wake up from inactivity.
           </p>
           {onRetry && (
             <div className="pt-2">
